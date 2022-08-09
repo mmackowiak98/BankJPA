@@ -4,7 +4,6 @@ import pl.bankproject.repository.InMemoryClientRepository;
 import pl.bankproject.service.BankService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
     private BankService bankService;
@@ -42,16 +41,15 @@ public class Main {
                 if (next.equals("3")) {
                     transferMoney(scanner);
                 }
-                if(next.equals("4")){
+                if (next.equals("4")) {
                     showBalance(scanner);
                 }
-                if(next.equals("5")){
+                if (next.equals("5")) {
                     removeClient(scanner);
                 }
-                if(next.equals("6")){
+                if (next.equals("6")) {
                     showClient();
                 }
-
 
 
             }
@@ -92,14 +90,14 @@ public class Main {
         bankService.save(new Client(clientName, clientEmail, clientBalance));
     }
 
-    private void transferMoney(Scanner scanner){
+    private void transferMoney(Scanner scanner) {
         System.out.println("From which email: ");
         final String fromEmail = scanner.next();
         System.out.println("To which email");
         final String toEmail = scanner.next();
         System.out.println("How much to transfer");
         final double amount = scanner.nextDouble();
-        bankService.transfer(fromEmail,toEmail,amount);
+        bankService.transfer(fromEmail, toEmail, amount);
 
     }
 }
