@@ -1,6 +1,8 @@
 package pl.bankproject;
 
+import pl.bankproject.repository.ClientRepository;
 import pl.bankproject.repository.InMemoryClientRepository;
+import pl.bankproject.repository.hibernate.JDBCClientRepository;
 import pl.bankproject.service.BankService;
 
 import java.util.*;
@@ -18,8 +20,8 @@ public class Main {
 
 
     public void run() {
-        final InMemoryClientRepository inMemoryClientRepository = new InMemoryClientRepository(new ArrayList<>());
-        bankService = new BankService(inMemoryClientRepository);
+        final ClientRepository repository = new JDBCClientRepository();
+        bankService = new BankService(repository);
         try (final Scanner scanner = new Scanner(System.in)) {
 
             while (true) {
