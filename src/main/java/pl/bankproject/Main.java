@@ -1,11 +1,10 @@
 package pl.bankproject;
 
 import pl.bankproject.repository.ClientRepository;
-import pl.bankproject.repository.InMemoryClientRepository;
-import pl.bankproject.repository.hibernate.JDBCClientRepository;
+import pl.bankproject.repository.hibernate.HibernateClientRepository;
 import pl.bankproject.service.BankService;
 
-import java.util.*;
+import java.util.Scanner;
 
 public class Main {
     private BankService bankService;
@@ -20,7 +19,7 @@ public class Main {
 
 
     public void run() {
-        final ClientRepository repository = new JDBCClientRepository();
+        final ClientRepository repository = new HibernateClientRepository();
         bankService = new BankService(repository);
         try (final Scanner scanner = new Scanner(System.in)) {
 
