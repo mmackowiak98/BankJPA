@@ -1,7 +1,6 @@
-package pl.bankproject.repository.hibernate;
+package pl.bankproject.repository;
 
 import pl.bankproject.Client;
-import pl.bankproject.repository.ClientRepository;
 
 import java.sql.*;
 
