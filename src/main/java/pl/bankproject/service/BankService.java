@@ -1,9 +1,10 @@
 package pl.bankproject.service;
 
-import pl.bankproject.Client;
+import pl.bankproject.exceptions.NoSuchClientInRepositoryException;
+import pl.bankproject.repository.entity.Client;
 import pl.bankproject.exceptions.NoSufficientFundsException;
 import pl.bankproject.exceptions.WrongClientDetailsException;
-import pl.bankproject.repository.ClientRepository;
+import pl.bankproject.interfaces.ClientRepository;
 
 import java.util.Objects;
 
@@ -27,28 +28,35 @@ public class BankService {
         validateAmount(amount);
         final Client from = clientRepository.findByEmail(fromEmail);
         final Client to = clientRepository.findByEmail(toEmail);
-        if (from != null && to != null) {
-            if (from.getEmail().equals(to.getEmail())) {
-                throw new WrongClientDetailsException("You can't transfer money to yourself");
-            }
-            if (from.getBalance() - amount >= 0) {
-                from.setBalance(from.getBalance() - amount);
-                System.out.println("You transfered " + amount + " from your account");
-                System.out.println("Your available amount right now is: " + from.getBalance());
-            } else {
-                throw new NoSufficientFundsException("Not enough amount on your account to transfer");
-            }
+        if (from.getEmail().equals(to.getEmail())) {
+            throw new WrongClientDetailsException("You can't transfer money to yourself");
+        }
+        if (from.getBalance() - amount >= 0) {
+            from.setBalance(from.getBalance() - amount);
+            System.out.println("You transfered " + amount + " from your account");
+            System.out.println("Your available amount right now is: " + from.getBalance());
+        } else {
+            throw new NoSufficientFundsException("Not enough amount on your account to transfer");
         }
         Objects.requireNonNull(to).setBalance(to.getBalance() + amount);
+        clientRepository.save(from);
+        clientRepository.save(to);
 
     }
 
-    public void deleteClient(String email) {
+    public boolean deleteClient(String email) {
         if (email == null) {
+            throw new IllegalArgumentException();
+        }
+        if(clientRepository.findByEmail(email)==null){
+            throw new NoSuchClientInRepositoryException("No such client in repository");
+        }
+        if(clientRepository.findByEmail(email).getBalance()>0){
             throw new IllegalArgumentException();
         }
         final Client clientToDelete = clientRepository.findByEmail(email);
         clientRepository.remove(clientToDelete);
+        return true;
 
     }
 
@@ -75,6 +83,7 @@ public class BankService {
         }
 
         withdrawClient.setBalance(withdrawClient.getBalance() - amount);
+        clientRepository.save(withdrawClient);
 
     }
 
