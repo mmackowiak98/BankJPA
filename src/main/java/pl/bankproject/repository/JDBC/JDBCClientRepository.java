@@ -1,9 +1,14 @@
-package pl.bankproject.repository;
+package pl.bankproject.repository.JDBC;
 
-import pl.bankproject.Client;
+import org.springframework.stereotype.Repository;
+import pl.bankproject.annotation.JDBCRepository;
+import pl.bankproject.interfaces.ClientRepository;
+import pl.bankproject.repository.entity.Client;
 
 import java.sql.*;
 
+@Repository
+@JDBCRepository
 public class JDBCClientRepository implements ClientRepository {
 
     public static final String USER = "postgres";
@@ -45,7 +50,7 @@ public class JDBCClientRepository implements ClientRepository {
             if(resultSet.next()){
                 final String name = resultSet.getString("first_name");
                 final String mail = resultSet.getString("mail");
-                return new Client(name,mail,0);
+                return new Client(name,mail,null);
             }
 
 
