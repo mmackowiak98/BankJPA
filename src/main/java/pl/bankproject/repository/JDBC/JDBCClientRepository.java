@@ -1,5 +1,6 @@
 package pl.bankproject.repository.JDBC;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import pl.bankproject.annotation.JDBCRepository;
 import pl.bankproject.interfaces.ClientRepository;
@@ -11,12 +12,22 @@ import java.sql.*;
 @JDBCRepository
 public class JDBCClientRepository implements ClientRepository {
 
-    public static final String USER = "postgres";
-    public static final String PASSWORD = "98564774";
-    public static final String JDBC_URL = "jdbc:postgresql://127.0.0.1:5432/test";
+    public final String user;
+    public final String password;
+    public final String jdbc_url;
+
+    public JDBCClientRepository(@Value("${jdbc.user}") String user,
+                                @Value("${jdbc.password}")String password,
+                                @Value("${jdbc.url}") String jdbc_url) {
+
+        this.user = user;
+        this.password = password;
+        this.jdbc_url = jdbc_url;
+    }
+
     @Override
     public void save(Client client) {
-        try(Connection connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD)){
+        try(Connection connection = DriverManager.getConnection(jdbc_url, user, password)){
             final String name = client.getName();
             final String email = client.getEmail();
             final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(first_name,mail) VALUES(?,?)");
@@ -43,7 +54,7 @@ public class JDBCClientRepository implements ClientRepository {
 
     @Override
     public Client findByEmail(String email) {
-        try(Connection connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD)){
+        try(Connection connection = DriverManager.getConnection(jdbc_url, user, password)){
             final PreparedStatement preparedStatement = connection.prepareStatement("SELECT first_name,mail FROM users WHERE mail=?");
             preparedStatement.setString(1,email);
             final ResultSet resultSet = preparedStatement.executeQuery();
