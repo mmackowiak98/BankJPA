@@ -1,17 +1,21 @@
 package pl.bankproject.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import pl.bankproject.annotation.HibernateRepository;
 import pl.bankproject.exceptions.NoSuchClientInRepositoryException;
-import pl.bankproject.repository.entity.Client;
 import pl.bankproject.exceptions.NoSufficientFundsException;
 import pl.bankproject.exceptions.WrongClientDetailsException;
 import pl.bankproject.interfaces.ClientRepository;
+import pl.bankproject.repository.entity.Client;
 
 import java.util.Objects;
-
+@Service
 public class BankService {
-    final private ClientRepository clientRepository;
 
-    public BankService(ClientRepository clientRepository) {
+    final private ClientRepository clientRepository;
+    @Autowired
+    public BankService(@HibernateRepository ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
@@ -33,7 +37,7 @@ public class BankService {
         }
         if (from.getBalance() - amount >= 0) {
             from.setBalance(from.getBalance() - amount);
-            System.out.println("You transfered " + amount + " from your account");
+            System.out.println("You transfer " + amount + " from your account");
             System.out.println("Your available amount right now is: " + from.getBalance());
         } else {
             throw new NoSufficientFundsException("Not enough amount on your account to transfer");

@@ -1,26 +1,32 @@
 package pl.bankproject;
 
-import pl.bankproject.repository.ClientRepository;
-import pl.bankproject.repository.hibernate.HibernateClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import pl.bankproject.repository.entity.Account;
+import pl.bankproject.repository.entity.Client;
 import pl.bankproject.service.BankService;
 
+import java.util.List;
 import java.util.Scanner;
 
-public class Main {
-    private BankService bankService;
+@SpringBootApplication
+public class Main implements CommandLineRunner {
+    private final BankService bankService;
 
-    public static void main(String[] args) {
-
-
-        new Main().run();
-
-
+    @Autowired
+    public Main(BankService bankService) {
+        this.bankService = bankService;
     }
 
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
+    }
 
-    public void run() {
-        final ClientRepository repository = new HibernateClientRepository();
-        bankService = new BankService(repository);
+    @Override
+    public void run(String... args) throws Exception {
+
         try (final Scanner scanner = new Scanner(System.in)) {
 
             while (true) {
@@ -88,7 +94,9 @@ public class Main {
         final String clientEmail = scanner.next();
         System.out.println("Set client account balance");
         final int clientBalance = scanner.nextInt();
-        bankService.save(new Client(clientName, clientEmail, clientBalance));
+        final Account account = new Account(clientBalance, "PLN");
+        final List<Account> accountsList = List.of(account);
+        bankService.save(new Client(clientName, clientEmail, accountsList));
     }
 
     private void transferMoney(Scanner scanner) {
@@ -101,4 +109,6 @@ public class Main {
         bankService.transfer(fromEmail, toEmail, amount);
 
     }
+
+
 }

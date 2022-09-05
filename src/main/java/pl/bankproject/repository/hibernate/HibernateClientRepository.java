@@ -2,14 +2,21 @@ package pl.bankproject.repository.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import pl.bankproject.Client;
-import pl.bankproject.repository.ClientRepository;
+import org.springframework.stereotype.Repository;
+import pl.bankproject.annotation.HibernateRepository;
+import pl.bankproject.interfaces.ClientRepository;
+import pl.bankproject.repository.entity.Client;
 
+@Repository
+@HibernateRepository
 public class HibernateClientRepository implements ClientRepository {
     @Override
     public void save(Client client) {
         try(final Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
+            client
+                    .getAccounts()
+                    .forEach(session::save);
             session.save(client);
             session.getTransaction().commit();
         }catch(Exception e){

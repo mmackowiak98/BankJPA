@@ -1,17 +1,19 @@
-package pl.bankproject.repository;
+package pl.bankproject.repository.InMemory;
 
-import pl.bankproject.Client;
+import org.springframework.stereotype.Repository;
+import pl.bankproject.annotation.InMemoryRepository;
+import pl.bankproject.interfaces.ClientRepository;
+import pl.bankproject.repository.entity.Client;
 import pl.bankproject.exceptions.ClientAlreadyExistsException;
 import pl.bankproject.exceptions.NoSuchClientInRepositoryException;
 import pl.bankproject.exceptions.WrongClientDetailsException;
 
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-
+@Repository
+@InMemoryRepository
 public class InMemoryClientRepository implements ClientRepository {
 
 
@@ -35,7 +37,7 @@ public class InMemoryClientRepository implements ClientRepository {
         if (emailExists(clients, clientEmail) && clients.size() > 0) {
             throw new ClientAlreadyExistsException("Email is already taken");
         }
-        Client approvedClient = new Client(clientName, clientEmail, client.getBalance());
+        Client approvedClient = new Client(clientName, clientEmail, null);
         clients.add(approvedClient);
 
 

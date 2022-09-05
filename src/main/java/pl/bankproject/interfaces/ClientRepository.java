@@ -1,8 +1,6 @@
-package pl.bankproject.repository;
+package pl.bankproject.interfaces;
 
-import pl.bankproject.Client;
-
-import java.util.List;
+import pl.bankproject.repository.entity.Client;
 
 public interface ClientRepository {
     void save(Client client);
