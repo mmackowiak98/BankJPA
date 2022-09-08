@@ -4,19 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import pl.bankproject.repository.entity.Account;
 import pl.bankproject.repository.entity.Client;
+import pl.bankproject.repository.interfaces.ClientSpringJpaRepository;
 import pl.bankproject.repository.service.BankService;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.List;
 import java.util.Scanner;
 
 @SpringBootApplication
 public class Main implements CommandLineRunner {
+    private final ClientSpringJpaRepository repository;
     private final BankService bankService;
 
     @Autowired
-    public Main(BankService bankService) {
+    public Main(ClientSpringJpaRepository repository, BankService bankService) {
+        this.repository = repository;
         this.bankService = bankService;
     }
 
@@ -27,42 +34,55 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        final List<Client> listOfClients = repository.findByName("Maciek");
+        listOfClients.forEach(System.out::println);
 
+        final Page<Client> page0 = repository.findByName("Bartek", PageRequest.of(0, 1));
+        page0.getContent().forEach(System.out::println);
+        final int totalPages = page0.getTotalPages();
 
-        try (final Scanner scanner = new Scanner(System.in)) {
+        System.out.println("----------------------------");
 
-            while (true) {
-                System.out.println("1.Add client");
-                System.out.println("2.Find client by email");
-                System.out.println("3.Transfer money");
-                System.out.println("4.Show balance");
-                System.out.println("5.Delete client");
-                System.out.println("6.Show all clients");
-                final String next = scanner.next();
-
-
-                if (next.equals("1")) {
-                    addUser(scanner);
-                }
-                if (next.equals("2")) {
-                    printUser(scanner);
-                }
-                if (next.equals("3")) {
-                    transferMoney(scanner);
-                }
-                if (next.equals("4")) {
-                    showBalance(scanner);
-                }
-                if (next.equals("5")) {
-                    removeClient(scanner);
-                }
-                if (next.equals("6")) {
-//                    showClient();
-                }
-
-
-            }
+        for (int i = 0; i < totalPages; i++) {
+            final Page<Client> page = repository.findByName("Bartek", PageRequest.of(i, 1, Sort.by("email")));
+            System.out.println(page);
+            page.getContent().forEach(System.out::println);
         }
+
+//        try (final Scanner scanner = new Scanner(System.in)) {
+//
+//            while (true) {
+//                System.out.println("1.Add client");
+//                System.out.println("2.Find client by email");
+//                System.out.println("3.Transfer money");
+//                System.out.println("4.Show balance");
+//                System.out.println("5.Delete client");
+//                System.out.println("6.Show all clients");
+//                final String next = scanner.next();
+//
+//
+//                if (next.equals("1")) {
+//                    addUser(scanner);
+//                }
+//                if (next.equals("2")) {
+//                    printUser(scanner);
+//                }
+//                if (next.equals("3")) {
+//                    transferMoney(scanner);
+//                }
+//                if (next.equals("4")) {
+//                    showBalance(scanner);
+//                }
+//                if (next.equals("5")) {
+//                    removeClient(scanner);
+//                }
+//                if (next.equals("6")) {
+////                    showClient();
+//                }
+//
+//
+//            }
+//        }
 
     }
 
