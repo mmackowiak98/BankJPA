@@ -2,20 +2,19 @@ package pl.bankproject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.bankproject.annotation.HibernateRepository;
 import pl.bankproject.exceptions.NoSuchClientInRepositoryException;
 import pl.bankproject.exceptions.NoSufficientFundsException;
 import pl.bankproject.exceptions.WrongClientDetailsException;
-import pl.bankproject.interfaces.ClientRepository;
+import pl.bankproject.interfaces.ClientSpringJpaRepository;
 import pl.bankproject.repository.entity.Client;
 
 import java.util.Objects;
 @Service
 public class BankService {
 
-    final private ClientRepository clientRepository;
+    final private ClientSpringJpaRepository clientRepository;
     @Autowired
-    public BankService(@HibernateRepository ClientRepository clientRepository) {
+    public BankService(ClientSpringJpaRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
@@ -59,7 +58,7 @@ public class BankService {
             throw new IllegalArgumentException();
         }
         final Client clientToDelete = clientRepository.findByEmail(email);
-        clientRepository.remove(clientToDelete);
+        clientRepository.deleteByEmail(clientToDelete);
         return true;
 
     }
@@ -69,9 +68,9 @@ public class BankService {
         System.out.println("Your balance is: " + clientRepository.findByEmail(clientEmail).getBalance());
     }
 
-    public void showClients() {
-        clientRepository.listOfClient();
-    }
+//    public void showClients() {
+//        clientRepository.listOfClients();
+//    }
 
 
     public void withdraw(String email, double amount) {

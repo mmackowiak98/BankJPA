@@ -27,6 +27,8 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+
+
         try (final Scanner scanner = new Scanner(System.in)) {
 
             while (true) {
@@ -55,7 +57,7 @@ public class Main implements CommandLineRunner {
                     removeClient(scanner);
                 }
                 if (next.equals("6")) {
-                    showClient();
+//                    showClient();
                 }
 
 
@@ -64,9 +66,9 @@ public class Main implements CommandLineRunner {
 
     }
 
-    private void showClient() {
-        bankService.showClients();
-    }
+//    private void showClient() {
+//        bankService.showClients();
+//    }
 
     private void removeClient(Scanner scanner) {
         System.out.println("Email of client to remove: ");
