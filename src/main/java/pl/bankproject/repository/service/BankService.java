@@ -1,11 +1,11 @@
-package pl.bankproject.service;
+package pl.bankproject.repository.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.bankproject.exceptions.NoSuchClientInRepositoryException;
-import pl.bankproject.exceptions.NoSufficientFundsException;
-import pl.bankproject.exceptions.WrongClientDetailsException;
-import pl.bankproject.interfaces.ClientSpringJpaRepository;
+import pl.bankproject.repository.exceptions.NoSuchClientInRepositoryException;
+import pl.bankproject.repository.exceptions.NoSufficientFundsException;
+import pl.bankproject.repository.exceptions.WrongClientDetailsException;
+import pl.bankproject.repository.interfaces.ClientSpringJpaRepository;
 import pl.bankproject.repository.entity.Client;
 
 import java.util.Objects;

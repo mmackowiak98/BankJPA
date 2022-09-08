@@ -1,4 +1,4 @@
-package pl.bankproject.interfaces;
+package pl.bankproject.repository.interfaces;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

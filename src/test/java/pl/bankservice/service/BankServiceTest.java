@@ -3,13 +3,13 @@ package pl.bankservice.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.bankproject.exceptions.NoSuchClientInRepositoryException;
-import pl.bankproject.exceptions.NoSufficientFundsException;
-import pl.bankproject.exceptions.WrongClientDetailsException;
-import pl.bankproject.interfaces.ClientSpringJpaRepository;
+import pl.bankproject.repository.exceptions.NoSuchClientInRepositoryException;
+import pl.bankproject.repository.exceptions.NoSufficientFundsException;
+import pl.bankproject.repository.exceptions.WrongClientDetailsException;
+import pl.bankproject.repository.interfaces.ClientSpringJpaRepository;
 import pl.bankproject.repository.entity.Account;
 import pl.bankproject.repository.entity.Client;
-import pl.bankproject.service.BankService;
+import pl.bankproject.repository.service.BankService;
 
 import java.util.Collections;
 

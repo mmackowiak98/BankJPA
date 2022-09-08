@@ -1,4 +1,4 @@
-package pl.bankproject.exceptions;
+package pl.bankproject.repository.exceptions;
 
 public class NoSufficientFundsException extends RuntimeException{
     public NoSufficientFundsException(String message) {

@@ -1,4 +1,4 @@
-package pl.bankproject.exceptions;
+package pl.bankproject.repository.exceptions;
 
 public class WrongClientDetailsException extends RuntimeException{
     public WrongClientDetailsException(String message) {
